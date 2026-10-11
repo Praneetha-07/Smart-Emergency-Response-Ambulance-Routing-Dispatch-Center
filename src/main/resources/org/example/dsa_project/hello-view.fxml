@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.dsa_project.HelloController" styleClass="root">
+    <top><VBox spacing="4" styleClass="topbar"><padding><Insets top="18" right="22" bottom="16" left="22"/></padding><Label text="SMART EMERGENCY RESPONSE" styleClass="eyebrow"/><Label text="Ambulance Routing &amp; Dispatch Center" styleClass="page-title"/><Label text="DSA simulation • Dynamic road network • Priority-based dispatch" styleClass="subtitle"/></VBox></top>
+    <center><ScrollPane fitToWidth="true" styleClass="main-scroll"><content><VBox spacing="14"><padding><Insets top="16" right="18" bottom="18" left="18"/></padding>
+        <HBox spacing="12">
+            <VBox styleClass="metric-card" HBox.hgrow="ALWAYS">
+                <Label text="AVAILABLE AMBULANCES" styleClass="metric-caption"/>
+                <Label fx:id="ambulanceCountLabel" text="0" styleClass="metric-value"/>
+            </VBox>
+            <VBox styleClass="metric-card" HBox.hgrow="ALWAYS">
+                <Label text="WAITING EMERGENCIES" styleClass="metric-caption"/>
+                <Label fx:id="waitingCountLabel" text="0" styleClass="metric-value"/>
+            </VBox>
+        <VBox styleClass="metric-card" HBox.hgrow="ALWAYS">
+            <Label text="ACTIVE DISPATCHES" styleClass="metric-caption"/>
+            <Label fx:id="dispatchedCountLabel" text="0" styleClass="metric-value"/>
+        </VBox>
+        </HBox>
+        <HBox spacing="14" alignment="TOP_LEFT">
+            <VBox spacing="10" styleClass="panel" prefWidth="300">
+                <Label text="REPORT EMERGENCY" styleClass="section-title"/>
+                <Label text="Incident location" styleClass="field-label"/>
+                <ComboBox fx:id="locationBox" maxWidth="Infinity"/>
+                <Label text="Severity" styleClass="field-label"/>
+                <ComboBox fx:id="severityBox" maxWidth="Infinity"/>
+                <CheckBox fx:id="advancedEquipmentBox" text="Requires advanced equipment"/>
+                <Button text="＋  Report emergency" onAction="#onReportEmergency" maxWidth="Infinity" styleClass="primary-button"/>
+                <Separator/>
+                <Label text="DISPATCH CONTROL" styleClass="section-title"/>
+                <Button text="Dispatch highest-priority request" onAction="#onDispatchNext" maxWidth="Infinity" styleClass="primary-button"/>
+                <Button text="Complete selected emergency" onAction="#onCompleteSelected" maxWidth="Infinity"/>
+                <Button text="Find route from Central" onAction="#onFindRoute" maxWidth="Infinity"/>
+                <Button text="Compare Dijkstra and A*" onAction="#onCompareAlgorithms" maxWidth="Infinity"/>
+                <Label fx:id="algorithmLabel" text="Algorithm metrics appear here." wrapText="true" styleClass="muted"/>
+            </VBox>
+            <VBox spacing="10" styleClass="panel" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT">
+                    <Label text="CITY ROAD NETWORK" styleClass="section-title" HBox.hgrow="ALWAYS"/>
+                    <Label text="● Available   ● Dispatched" styleClass="muted"/>
+                </HBox>
+                <Canvas fx:id="cityCanvas" width="760" height="330" VBox.vgrow="ALWAYS"/>
+                <Label fx:id="routeSummaryLabel" text="Choose a destination and find a route, or dispatch a waiting emergency." wrapText="true" styleClass="route-summary"/><Label text="ROAD / TRAFFIC SIMULATOR" styleClass="section-title"/><HBox spacing="8"><ComboBox fx:id="roadFromBox" promptText="From" HBox.hgrow="ALWAYS"/><ComboBox fx:id="roadToBox" promptText="To" HBox.hgrow="ALWAYS"/><Button text="Block / reopen" onAction="#onToggleRoad"/><Button text="Increase traffic" onAction="#onIncreaseTraffic"/></HBox><Label text="Red road = blocked • Yellow = slower traffic • Green = selected route" styleClass="muted"/></VBox></HBox>
+        <VBox spacing="8" styleClass="panel">
+            <HBox alignment="CENTER_LEFT">
+            <Label text="EMERGENCY QUEUE &amp; DISPATCHES" styleClass="section-title" HBox.hgrow="ALWAYS"/>
+                <ComboBox fx:id="emergencyFilterBox" prefWidth="150"/></HBox>
+            <TableView fx:id="emergencyTable" prefHeight="190"><columns>
+                <TableColumn fx:id="idCol" text="ID" prefWidth="80"/>
+                <TableColumn fx:id="locationCol" text="Location" prefWidth="110"/>
+                <TableColumn fx:id="severityCol" text="Severity" prefWidth="100"/>
+                <TableColumn fx:id="statusCol" text="Status" prefWidth="100"/>
+                <TableColumn fx:id="ambulanceCol" text="Ambulance" prefWidth="100"/>
+                <TableColumn fx:id="hospitalCol" text="Hospital" prefWidth="140"/>
+                <TableColumn fx:id="etaCol" text="ETA" prefWidth="90"/>
+                <TableColumn fx:id="hospitalEtaCol" text="Hospital ETA" prefWidth="120.0" />
+            </columns>
+            </TableView>
+        </VBox>
+        <HBox spacing="14">
+            <VBox spacing="8" styleClass="panel" HBox.hgrow="ALWAYS">
+                <Label text="AMBULANCE FLEET" styleClass="section-title"/>
+                <TableView fx:id="ambulanceTable" prefHeight="170">
+                    <columns>
+                        <TableColumn fx:id="ambulanceIdCol" text="ID" prefWidth="90"/>
+                        <TableColumn fx:id="ambulanceLocationCol" text="Location" prefWidth="110"/>
+                        <TableColumn fx:id="ambulanceStatusCol" text="Status" prefWidth="100"/>
+                        <TableColumn fx:id="equipmentCol" text="Equipment" prefWidth="100"/>
+                        <TableColumn fx:id="assignmentCol" text="Assignment" prefWidth="100"/>
+                    </columns>
+                </TableView>
+            </VBox>
+            <VBox spacing="8" styleClass="panel" HBox.hgrow="ALWAYS">
+            <Label text="HOSPITAL CAPACITY" styleClass="section-title"/>
+                <TableView fx:id="hospitalTable" prefHeight="170">
+                    <columns>
+                        <TableColumn fx:id="hospitalNameCol" text="Hospital" prefWidth="140"/>
+                        <TableColumn fx:id="hospitalLocationCol" text="Location" prefWidth="110"/>
+                        <TableColumn fx:id="bedsCol" text="Beds" prefWidth="55"/>
+                        <TableColumn fx:id="facilitiesCol" text="Facilities" prefWidth="150"/>
+                    </columns>
+                </TableView>
+            </VBox>
+        </HBox>
+        <VBox spacing="8" styleClass="panel">
+            <Label text="DISPATCH EVENT LOG" styleClass="section-title"/>
+            <ListView fx:id="historyList" prefHeight="130"/>
+        </VBox>
+        <Label fx:id="statusLabel" text="System ready. Sample emergencies are loaded." styleClass="status-line"/>
+    </VBox>
+    </content>
+    </ScrollPane>
+    </center>
+</BorderPane>
