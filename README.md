@@ -116,6 +116,4 @@ This project demonstrates how fundamental data structures and algorithms can be 
 
 This application is intended solely for academic and demonstration purposes. It must not be used to make real emergency response, ambulance dispatch, hospital selection, or medical decisions.
 
-## Author
 
-**Praneetha Ravuri**
